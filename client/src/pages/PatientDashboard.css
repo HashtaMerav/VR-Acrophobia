@@ -1,0 +1,64 @@
+.patient-dashboard-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #f4f7ff, #e9efff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .patient-dashboard-card {
+    width: 1100px;
+    max-width: 90vw;
+    background: white;
+    padding: 40px;
+    border-radius: 22px;
+    box-shadow: 0 18px 45px rgba(70, 80, 120, 0.15);
+    text-align: center;
+    color: #2f2545;
+  }
+  
+  .patient-dashboard-card h1 {
+    color: #2f2545;
+  }
+
+  .decision-box h2 {
+    color: #2f2545;
+  }
+
+  .decision-box p {
+    color: #2f2545;
+  }
+  
+  .decision-box {
+    background: #f8faff;
+    padding: 25px;
+    border-radius: 16px;
+  }
+  
+  .stress {
+    font-size: 22px;
+    font-weight: bold;
+  }
+  
+  .stress.low {
+    color: green;
+  }
+  
+  .stress.medium {
+    color: orange;
+  }
+  
+  .stress.high {
+    color: red;
+  }
+  .patient-info-box h2 {
+    color: #2c234d;
+  }
+  
+  .patient-info-box p {
+    color: #171235;
+  }

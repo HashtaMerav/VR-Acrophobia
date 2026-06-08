@@ -1,0 +1,87 @@
+.therapist-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #f4f7ff, #e9efff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .therapist-card {
+    width: 600px;
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  .therapist-card h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #2f2545;
+  }
+  
+  .therapist-card h2 {
+    margin-bottom: 15px;
+    color: #2c234d;
+    font-weight: 600;
+  }
+  
+  .patients-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .patient-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8faff;
+    padding: 12px 15px;
+    border-radius: 10px;
+  }
+  
+  .patient-item button {
+    background: #6c63ff;
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .patient-item button:hover {
+    background: #574ee8;
+  }
+  .add-patient-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 25px;
+  }
+  
+  .add-patient-form input {
+    padding: 12px;
+    border: 1px solid #d7ddea;
+    border-radius: 10px;
+    background: #f8faff;
+    color: #2f2545;
+  }
+  
+  .add-patient-form button {
+    grid-column: span 2;
+    padding: 12px;
+    background: #6c63ff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  
+  .add-patient-form button:hover {
+    background: #574ee8;
+  }
