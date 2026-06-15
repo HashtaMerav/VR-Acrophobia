@@ -8,6 +8,8 @@ function PatientDashboard() {
   const [therapistDecision, setTherapistDecision] = useState("");
   const [stressLevel, setStressLevel] = useState("");
   const [analysis, setAnalysis] = useState(null);
+  const [sessionId, setSessionId] = useState(null);
+  const [patientChoice, setPatientChoice] = useState("");
 
   useEffect(() => {
     const loadPatientData = async () => {
@@ -47,6 +49,7 @@ function PatientDashboard() {
         }
 
         const sessionId = latestSessionData.session_id;
+        setSessionId(sessionId);
 
         const analysisRes = await fetch(
           `${API_BASE_URL}/sessions/${sessionId}/analysis`
@@ -76,6 +79,34 @@ function PatientDashboard() {
 
     loadPatientData();
   }, []);
+
+  const savePatientChoice = async (choice) => {
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/sessions/${sessionId}/patient-choice`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            patient_choice: choice,
+          }),
+        }
+      );
+  
+      const data = await response.json();
+  
+      setPatientChoice(choice);
+  
+      setPatient((prev) => ({
+        ...prev,
+        currentLevel: data.current_level,
+      }));
+    } catch (error) {
+      console.error("Error saving patient choice:", error);
+    }
+  };
 
   return (
     <div className="patient-dashboard-page">
@@ -112,6 +143,43 @@ function PatientDashboard() {
               ? therapistDecision
               : "The therapist has not made a decision yet"}
           </p>
+          <h2>Your Next Step</h2>
+
+          <div className="patient-choice-buttons">
+
+            <button
+              className={
+                systemDecision.toLowerCase().includes("continue")
+                  ? "recommended-btn"
+                  : "secondary-btn"
+              }
+              onClick={() =>
+                savePatientChoice("Continue to next stage")
+              }
+            >
+              Continue to Next Stage
+            </button>
+
+            <button
+              className={
+                systemDecision.toLowerCase().includes("stay")
+                  ? "recommended-btn"
+                  : "secondary-btn"
+              }
+              onClick={() =>
+                savePatientChoice("Repeat current stage")
+              }
+            >
+              Repeat Current Stage
+            </button>
+
+          </div>
+
+          {patientChoice && (
+            <p className="patient-choice-message">
+              Your choice: {patientChoice}
+            </p>
+          )}
         </div>
       </div>
     </div>

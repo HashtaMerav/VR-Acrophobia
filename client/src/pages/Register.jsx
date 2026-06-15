@@ -52,36 +52,54 @@ function Register() {
         <h1>Register</h1>
   
         <form className="register-form" onSubmit={handleSubmit}>
-          <input type="text" name="fullName" placeholder="Full name" value={formData.fullName} onChange={handleChange} />
-          <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} />
-          <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} />
+          <input
+            type="text"
+            name="fullName"
+            placeholder="Full name"
+            value={formData.fullName}
+            onChange={handleChange}
+          />
   
-          <select name="role" value={formData.role} onChange={handleChange}>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+          />
+  
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+          />
+  
+          <select
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+          >
             <option value="patient">Patient</option>
             <option value="therapist">Therapist</option>
           </select>
   
           <button type="submit">Register</button>
         </form>
-
-        <p style={{ marginTop: "10px" }}>
-            Already have an account?
+  
+        <p className="login-text">
+          Already have an account?
         </p>
-
+  
         <button
-            type="button"
-            onClick={() => navigate("/login")}
-            style={{
-                marginTop: "10px",
-                background: "transparent",
-                color: "#6c63ff",
-                border: "none",
-                cursor: "pointer"
-            }}
+          type="button"
+          className="login-link"
+          onClick={() => navigate("/login")}
         >
-            Go to Login
+          Go to Login
         </button>
-        
+  
         <p className="register-message">{message}</p>
       </div>
     </div>

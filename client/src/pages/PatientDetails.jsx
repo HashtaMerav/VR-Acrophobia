@@ -12,7 +12,9 @@ function PatientDetails() {
   const [therapistDecision, setTherapistDecision] = useState("");
   const [stressLevel, setStressLevel] = useState("");
   const [analysis, setAnalysis] = useState(null);
-  
+  const [startMessage, setStartMessage] = useState("");
+  const [startingSession, setStartingSession] = useState(false);
+
   useEffect(() => {
     fetch(`${API_BASE_URL}/patients/${id}`)
       .then((res) => res.json())
@@ -96,10 +98,118 @@ function PatientDetails() {
       });
   };
 
+  const startSession = () => {
+    setStartingSession(true);
+    setStartMessage("");
+  
+    fetch(`${API_BASE_URL}/patients/${id}/start-session`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        vr_level: patient.currentLevel || 1,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.session_id) {
+          setSessionId(data.session_id);
+          setLogs([]);
+          setAnalysis(null);
+          setDecision("");
+          setStressLevel("");
+          setTherapistDecision("");
+  
+          setStartMessage(
+            `Session ${data.session_id} started successfully. You can now start the VR stage.`
+          );
+        } else {
+          setStartMessage(data.message || "Failed to start session");
+        }
+      })
+      .catch((error) => {
+        console.error("Error starting session:", error);
+        setStartMessage("Error starting session");
+      })
+      .finally(() => {
+        setStartingSession(false);
+      });
+  };
+
+  const loadSessionResults = () => {
+    if (!sessionId) return;
+  
+    fetch(`${API_BASE_URL}/sessions/${sessionId}/combined-by-time`)
+      .then((res) => res.json())
+      .then((data) => {
+        const formattedLogs = data.combined_data.map((item) => ({
+          id: item.event_id,
+          time: item.unity_time,
+          action: item.unity_action,
+          heartRate: item.heart_rate,
+        }));
+  
+        setLogs(formattedLogs);
+      });
+  
+    fetch(`${API_BASE_URL}/sessions/${sessionId}/analysis`)
+      .then((res) => res.json())
+      .then((data) => {
+        setAnalysis(data);
+        setDecision(data.system_recommendation || "");
+        setStressLevel(data.stress_level || "");
+      });
+  };
+
   return (
     <div className="patient-page">
       <div className="patient-card">
         <h1>Patient Details</h1>
+        <div className="start-session-box">
+            <button
+              className="start-session-button"
+              onClick={startSession}
+              disabled={startingSession}
+            >
+              {startingSession ? "Starting..." : "Start Session"}
+            </button>
+
+            {startMessage && (
+              <p className="start-session-message">{startMessage}</p>
+            )}
+        </div>
+        {sessionId && logs.length === 0 && (
+          <div className="vr-waiting-box">
+            <div className="vr-card-icon">
+              <div className="vr-headset">
+                <div className="vr-screen">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <div className="vr-strap"></div>
+              </div>
+          
+              <div className="loading-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          
+            <h3>Waiting for VR session to complete</h3>
+            <p>The patient is currently performing the VR stage.</p>
+          </div>
+        )}
+        {sessionId && (
+          <button
+            className="view-results-button"
+            onClick={loadSessionResults}
+          >
+            View Session Results
+          </button>
+        )}
 
         <div className="patient-header">
           <div className="patient-info">
@@ -188,7 +298,10 @@ function PatientDetails() {
           <h2>System Decision</h2>
         
           <p style={{
-            color: decision.toLowerCase().includes("continue") ? "green" : "red",            fontWeight: "bold"
+            color:
+            decision && decision.toLowerCase().includes("continue")
+              ? "green"
+              : "red",
           }}>
             {decision || "No recommendation yet"}
           </p>

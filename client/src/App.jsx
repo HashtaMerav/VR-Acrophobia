@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import TherapistDashboard from "./pages/TherapistDashboard";
 import PatientDashboard from "./pages/PatientDashboard";
 import PatientDetails from "./pages/PatientDetails";
+import "./design.css";
 
 function App() {
   return (
