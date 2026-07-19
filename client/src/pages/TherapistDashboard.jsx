@@ -63,6 +63,32 @@ function TherapistDashboard() {
     }
   };
 
+  const removePatient = async (patientId) => {
+  const user = getLoggedInUser();
+
+  if (!user) {
+    console.error("No user found in localStorage");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/therapists/by-user/${user.id}/remove-patient/${patientId}`,
+      {
+        method: "POST",
+      }
+    );
+
+    const data = await response.json();
+    console.log(data);
+
+    loadPatients();
+    loadAvailablePatients();
+  } catch (error) {
+    console.error("Error removing patient:", error);
+  }
+};
+
   useEffect(() => {
     loadPatients();
     loadAvailablePatients();
@@ -73,7 +99,12 @@ function TherapistDashboard() {
       <div className="therapist-card">
         <h1>Therapist Dashboard</h1>
 
-        <div className="section-header" onClick={() => setShowAvailablePatients(!showAvailablePatients)}>
+        <div
+          className="section-header"
+          onClick={() =>
+            setShowAvailablePatients(!showAvailablePatients)
+          }
+        >
           <h2>Available Patients</h2>
           <span>{showAvailablePatients ? "▲" : "▼"}</span>
         </div>
@@ -86,8 +117,7 @@ function TherapistDashboard() {
               availablePatients.map((patient) => (
                 <div key={patient.id} className="patient-item">
                   <span>
-                    {patient.fullName} | Age: {patient.age || "Unknown"} | Level:{" "}
-                    {patient.currentLevel}
+                    {patient.fullName} | Level: {patient.currentLevel}
                   </span>
 
                   <button onClick={() => assignPatient(patient.id)}>
@@ -108,15 +138,22 @@ function TherapistDashboard() {
             patients.map((patient) => (
               <div key={patient.id} className="patient-item">
                 <span>
-                  {patient.fullName} | Age: {patient.age || "Unknown"} | Level:{" "}
-                  {patient.currentLevel}
+                  {patient.fullName} | Level: {patient.currentLevel}
                 </span>
 
-                <button
-                  onClick={() => navigate(`/therapist/patient/${patient.id}`)}
-                >
-                  View
-                </button>
+                <div className="patient-actions">
+                  <button
+                    onClick={() =>
+                      navigate(`/therapist/patient/${patient.id}`)
+                    }
+                  >
+                    View
+                  </button>
+
+                  <button onClick={() => removePatient(patient.id)}>
+                    Remove
+                  </button>
+                </div>
               </div>
             ))
           )}

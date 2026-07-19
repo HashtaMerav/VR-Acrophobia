@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import TherapistDashboard from "./pages/TherapistDashboard";
 import PatientDashboard from "./pages/PatientDashboard";
 import PatientDetails from "./pages/PatientDetails";
+import SessionHistory from "./pages/SessionHistory"; 
 import "./design.css";
 
 function App() {
@@ -14,8 +15,7 @@ function App() {
       <Route path="/therapist" element={<TherapistDashboard />} />
       <Route path="/patient" element={<PatientDashboard />} />
       <Route path="/therapist/patient/:id" element={<PatientDetails />} />
-      <Route path="/patient" element={<PatientDashboard />} />
-      
+      <Route path="/history/:role/:patientId" element={<SessionHistory />} />     
     </Routes>
   );
 }
