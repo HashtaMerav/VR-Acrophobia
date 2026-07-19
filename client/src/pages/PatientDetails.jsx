@@ -10,8 +10,8 @@ function PatientDetails() {
   const [sessionId, setSessionId] = useState(null);
   const [patient, setPatient] = useState(null);
   const [logs, setLogs] = useState([]);
-  const [decision, setDecision] = useState("");
-  const [therapistDecision, setTherapistDecision] = useState("");
+  const [recommendation, setRecommendation] = useState("");
+  const [therapistRecommendation, setTherapistRecommendation] = useState("");
   const [stressLevel, setStressLevel] = useState("");
   const [analysis, setAnalysis] = useState(null);
   const [startMessage, setStartMessage] = useState("");
@@ -60,7 +60,7 @@ function PatientDetails() {
       .then((res) => res.json())
       .then((data) => {
         setAnalysis(data);
-        setDecision(data.system_recommendation);
+        setRecommendation(data.system_recommendation);
         setStressLevel(data.stress_level);
       })
       .catch((error) => {
@@ -96,24 +96,24 @@ function PatientDetails() {
 
   const heartRateRange = maxHR - minHR || 1;
 
-  const saveTherapistDecision = (decisionValue) => {
+  const saveTherapistRecommendation = (recommendationValue) => {
     if (!sessionId) return;
 
-    fetch(`${API_BASE_URL}/sessions/${sessionId}/therapist-decision`, {
+    fetch(`${API_BASE_URL}/sessions/${sessionId}/therapist-recommendation`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        therapist_decision: decisionValue,
+        therapist_recommendation: recommendationValue,
       }),
     })
       .then((res) => res.json())
       .then((data) => {
-        setTherapistDecision(data.therapist_decision);
+        setTherapistRecommendation(data.therapist_recommendation);
       })
       .catch((error) => {
-        console.error("Error saving therapist decision:", error);
+        console.error("Error saving therapist recommendation:", error);
       });
   };
 
@@ -137,9 +137,9 @@ function PatientDetails() {
           setSessionActive(true);
           setLogs([]);
           setAnalysis(null);
-          setDecision("");
+          setRecommendation("");
           setStressLevel("");
-          setTherapistDecision("");
+          setTherapistRecommendation("");
 
           setStartMessage(
             `Session ${data.session_id} started successfully. You can now start the VR stage.`
@@ -172,9 +172,9 @@ function PatientDetails() {
         setSessionActive(false);
         setLogs([]);
         setAnalysis(null);
-        setDecision("");
+        setRecommendation("");
         setStressLevel("");
-        setTherapistDecision("");
+        setTherapistRecommendation("");
       })
       .catch((error) => {
         console.error("Error ending session:", error);
@@ -212,7 +212,7 @@ function PatientDetails() {
       .then((res) => res.json())
       .then((data) => {
         setAnalysis(data);
-        setDecision(data.system_recommendation || "");
+        setRecommendation(data.system_recommendation || "");
         setStressLevel(data.stress_level || "");
       });
   };
@@ -370,7 +370,7 @@ function PatientDetails() {
           </div>
         </div>
 
-        <div className="decision-box">
+        <div className="recommendation-box">
           {analysis && (
             <div>
               <p><strong>Baseline Heart Rate:</strong> {analysis.baseline_heart_rate}</p>
@@ -379,15 +379,15 @@ function PatientDetails() {
               <p><strong>Final Heart Rate:</strong> {analysis.final_heart_rate}</p>
             </div>
           )}
-          <h2>System Decision</h2>
+          <h2>System Recommendation</h2>
 
           <p style={{
             color:
-              decision && decision.toLowerCase().includes("continue")
+            recommendation && recommendation.toLowerCase().includes("continue")
                 ? "green"
                 : "red",
           }}>
-            {decision || "No recommendation yet"}
+            {recommendation || "No recommendation yet"}
           </p>
 
           <h2>Stress Level</h2>
@@ -401,26 +401,26 @@ function PatientDetails() {
             {stressLevel}
           </p>
 
-          <h2>Therapist Decision</h2>
+          <h2>Therapist Recommendation</h2>
 
-          <div className="decision-buttons">
+          <div className="recommendation-buttons">
             <button
               className="blue-btn"
-              onClick={() => saveTherapistDecision("Continue to next level")}
+              onClick={() => saveTherapistRecommendation("Continue to next level")}
             >
               Continue to next level
             </button>
 
             <button
               className="blue-btn"
-              onClick={() => saveTherapistDecision("Stay in current level")}
+              onClick={() => saveTherapistRecommendation("Stay in current level")}
             >
               Stay in current level
             </button>
           </div>
 
-          {therapistDecision && (
-            <p>Final therapist decision: {therapistDecision}</p>
+          {therapistRecommendation && (
+            <p>Therapist Recommendation: {therapistRecommendation}</p>
           )}
         </div>
       </div>

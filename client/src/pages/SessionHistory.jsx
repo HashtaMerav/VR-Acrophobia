@@ -144,7 +144,7 @@ export default function SessionHistory() {
                     <th>Stress</th>
                     <th>Avg HR</th>
                     <th>System Rec.</th>
-                    {viewerRole === "therapist" && <th>Therapist</th>}
+                    {viewerRole === "therapist" && <th>Therapist Rec.</th>}
                     <th>Patient</th>
                     <th></th>
                   </tr>
@@ -189,8 +189,8 @@ export default function SessionHistory() {
                         </td>
                         {viewerRole === "therapist" && (
                           <td>
-                            {s.therapist_decision
-                              ? <span className="sh-decision">{s.therapist_decision}</span>
+                            {s.therapist_recommendation
+                              ? <span className="sh-decision">{s.therapist_recommendation}</span>
                               : <span className="sh-no-data">Not set</span>}
                           </td>
                         )}

@@ -6,7 +6,7 @@ import "./PatientDashboard.css";
 function PatientDashboard() {
   const [patient, setPatient] = useState(null);
   const [systemDecision, setSystemDecision] = useState("");
-  const [therapistDecision, setTherapistDecision] = useState("");
+  const [therapistRecommendation, setTherapistRecommendation] = useState("");
   const [stressLevel, setStressLevel] = useState("");
   const [analysis, setAnalysis] = useState(null);
   const [sessionId, setSessionId] = useState(null);
@@ -38,7 +38,7 @@ function PatientDashboard() {
         if (!latestSessionData.session_id) {
           setSystemDecision("No recommendation yet");
           setStressLevel("Unknown");
-          setTherapistDecision("");
+          setTherapistRecommendation("");
           return;
         }
 
@@ -65,9 +65,9 @@ function PatientDashboard() {
           (session) => session.id === newSessionId
         );
 
-        setTherapistDecision(
-          currentSession?.therapistDecision ||
-          currentSession?.therapist_decision ||
+        setTherapistRecommendation(
+          currentSession?.therapistRecommendation ||
+          currentSession?.therapist_recommendation ||
           ""
         );
       } catch (error) {
@@ -209,17 +209,17 @@ function PatientDashboard() {
           <div className="dashboard-panel decision-panel">
             <h2>Decision Support</h2>
 
-            <div className="decision-item">
+            <div className="recommendation-item">
               <span>System Recommendation</span>
               <strong className={`status-badge ${getRecommendationClass()}`}>
                 {systemDecision || "No recommendation yet"}
               </strong>
             </div>
 
-            <div className="decision-item">
-              <span>Therapist Decision</span>
+            <div className="recommendation-item">
+              <span>Therapist Recommendation</span>
               <strong className="status-badge status-warning">
-                {therapistDecision || "Not decided yet"}
+                {therapistRecommendation || "Not set yet"}
               </strong>
             </div>
 

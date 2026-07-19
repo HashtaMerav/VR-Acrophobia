@@ -173,7 +173,7 @@
   font-weight: 800;
 }
 
-.decision-box {
+.recommendation-box {
   margin-top: 22px;
   padding: 20px;
   background: rgba(219, 234, 254, 0.6);
@@ -183,23 +183,23 @@
   font-weight: 800;
 }
 
-.decision-box p {
+.recommendation-box p {
   margin: 6px 0;
 }
 
-.decision-box h2 {
+.recommendation-box h2 {
   margin: 12px 0 8px;
   font-size: 22px;
 }
 
-.decision-buttons {
+.recommendation-buttons {
   display: flex;
   justify-content: center;
   gap: 14px;
   margin-top: 12px;
 }
 
-.decision-buttons button {
+.recommendation-buttons button {
   padding: 11px 18px;
   border-radius: 14px;
   border: none;
@@ -208,11 +208,11 @@
   color: white;
 }
 
-.decision-buttons button:first-child {
+.recommendation-buttons button:first-child {
   background: linear-gradient(135deg, #16a34a, #22c55e);
 }
 
-.decision-buttons button:last-child {
+.recommendation-buttons button:last-child {
   background: linear-gradient(135deg, #dc2626, #ef4444);
 }
 
