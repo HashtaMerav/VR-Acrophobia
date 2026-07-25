@@ -11,7 +11,7 @@ The project combines:
 * FastAPI backend
 * PostgreSQL database
 * React web application
-* Therapist decision support
+* Therapist recommendation support
 
 The system analyzes physiological data collected during VR sessions and generates recommendations regarding patient progression.
 
@@ -22,7 +22,7 @@ The system analyzes physiological data collected during VR sessions and generate
 * View current therapy level
 * View stress level
 * View system recommendation
-* View therapist decision
+* View therapist recommendation
 
 ### Therapist Dashboard
 
