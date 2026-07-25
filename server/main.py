@@ -39,8 +39,8 @@ class StartSessionRequest(BaseModel):
 class PatientChoiceRequest(BaseModel):
     patient_choice: str
 
-class TherapistDecisionRequest(BaseModel):
-    therapist_decision: str
+class TherapistRecommendationRequest(BaseModel):
+    therapist_recommendation: str
 
 class ActivityLogRequest(BaseModel):
     unity_session_id: str | None = None
@@ -513,7 +513,7 @@ def get_patient_sessions(patient_id: int):
 
     cursor.execute(
         """
-        SELECT id, session_date, vr_level, system_recommendation, therapist_decision, notes
+        SELECT id, session_date, vr_level, system_recommendation, therapist_recommendation, notes
         FROM sessions
         WHERE patient_id = %s
         ORDER BY session_date DESC
@@ -534,7 +534,7 @@ def get_patient_sessions(patient_id: int):
             "sessionDate": row[1],
             "vrLevel": row[2],
             "systemRecommendation": row[3],
-            "therapistDecision": row[4],
+            "therapistRecommendation": row[4],
             "notes": row[5],
         })
 
@@ -638,7 +638,7 @@ def get_sessions_history(patient_id: int):
             s.session_date,
             s.vr_level,
             s.status,
-            s.therapist_decision,
+            s.therapist_recommendation,
             s.patient_choice,
             s.start_time,
             s.end_time
@@ -658,7 +658,7 @@ def get_sessions_history(patient_id: int):
         session_date = str(s[1]) if s[1] else None
         vr_level    = s[2]
         status      = s[3]
-        therapist_decision = s[4]
+        therapist_recommendation = s[4]
         patient_choice     = s[5]
         start_time  = str(s[6]) if s[6] else None
         end_time    = str(s[7]) if s[7] else None
@@ -721,7 +721,7 @@ def get_sessions_history(patient_id: int):
             "final_hr":             final_hr,
             "stress_level":         stress_level,
             "system_recommendation": system_recommendation,
-            "therapist_decision":   therapist_decision,
+            "therapist_recommendation":   therapist_recommendation,
             "patient_choice":       patient_choice,
         })
  
@@ -1053,20 +1053,20 @@ def analyze_session(session_id: int):
     }
 
 # Treatment Decision Endpoints
-# Handles therapist decisions and patient choices
-@app.put("/sessions/{session_id}/therapist-decision")
-def update_therapist_decision(session_id: int, data: TherapistDecisionRequest):
+# Handles therapist recomendetions and patient choices
+@app.put("/sessions/{session_id}/therapist-recommendation")
+def update_therapist_recommendation(session_id: int, data: TherapistRecommendationRequest):
     conn = get_db_connection()
     cursor = conn.cursor()
 
     cursor.execute(
         """
         UPDATE sessions
-        SET therapist_decision = %s
+        SET therapist_recommendation = %s
         WHERE id = %s
-        RETURNING id, therapist_decision
+        RETURNING id, therapist_recommendation
         """,
-        (data.therapist_decision, session_id)
+        (data.therapist_recommendation, session_id)
     )
 
     row = cursor.fetchone()
@@ -1079,9 +1079,9 @@ def update_therapist_decision(session_id: int, data: TherapistDecisionRequest):
         return {"message": "Session not found"}
 
     return {
-        "message": "Therapist decision saved successfully",
+        "message": "Therapist recommendation saved successfully",
         "session_id": row[0],
-        "therapist_decision": row[1]
+        "therapist_recommendation": row[1]
     }
 
 @app.put("/sessions/{session_id}/patient-choice")
