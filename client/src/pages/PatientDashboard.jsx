@@ -42,7 +42,7 @@ function PatientDashboard() {
           return;
         }
 
-        const newSessionId = latestSessionData.session_id;
+        const newSessionId = 23; // TEMP QA TEST - Session 27
         setSessionId(newSessionId);
 
         const analysisRes = await fetch(
@@ -235,7 +235,7 @@ function PatientDashboard() {
                         : "secondary-btn"
                     }
                     onClick={() => savePatientChoice("Continue to next stage")}
-                    disabled={!!patientChoice}
+                    disabled={!therapistRecommendation || !!patientChoice}
 
                   >
                     Continue
@@ -257,7 +257,7 @@ function PatientDashboard() {
                       : "secondary-btn"
                   }
                   onClick={() => savePatientChoice("Repeat current stage")}
-                  disabled={!!patientChoice}
+                  disabled={!therapistRecommendation || !!patientChoice}
                 >
                   Repeat Stage
                 </button>

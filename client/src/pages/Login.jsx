@@ -22,6 +22,11 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!formData.email.trim() || !formData.password.trim()) {
+      setMessage("Email and password are required");
+      return;
+    }
+
     try {
       const response = await fetch(`${API_BASE_URL}/login`, {
         method: "POST",
@@ -62,6 +67,7 @@ function Login() {
             name="email"
             placeholder="Email"
             onChange={handleChange}
+            required
           />
   
           <input
@@ -69,6 +75,7 @@ function Login() {
             name="password"
             placeholder="Password"
             onChange={handleChange}
+            required
           />
   
           <button type="submit">Login</button>
